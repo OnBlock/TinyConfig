@@ -13,6 +13,7 @@ dependencies {
 }
 ```
 Where `tiny_config_version` is the latest tag under the releases tab.
+(If you put your mod on curse forge, please list [the project page](https://www.curseforge.com/minecraft/mc-mods/tinyconfig) as an embedded dependency)
 ### Usage
 -----
 You can get a config file for your mod like this:
