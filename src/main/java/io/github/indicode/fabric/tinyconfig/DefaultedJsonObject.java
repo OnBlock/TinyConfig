@@ -1,6 +1,7 @@
 package io.github.indicode.fabric.tinyconfig;
 
 import blue.endless.jankson.*;
+import blue.endless.jankson.impl.Marshaller;
 
 import java.util.function.Consumer;
 
@@ -8,11 +9,17 @@ import java.util.function.Consumer;
  * @author Indigo Amann
  */
 public class DefaultedJsonObject extends JsonObject {
+    public DefaultedJsonObject(Marshaller marshaller) {
+        super();
+        this.marshaller = marshaller;
+    }
+    public DefaultedJsonObject() {
+        super();
+    }
     public static DefaultedJsonObject of(JsonObject jsonObject) {
         if (jsonObject instanceof DefaultedJsonObject) return (DefaultedJsonObject) jsonObject;
-        DefaultedJsonObject n = new DefaultedJsonObject();
+        DefaultedJsonObject n = new DefaultedJsonObject(jsonObject.getMarshaller());
         jsonObject.forEach(n::put);
-        n.setMarshaller(jsonObject.getMarshaller());
         return n;
     }
     public JsonElement get(String key, Getter<? extends JsonElement> defaultValueGetter, String comment) {
@@ -70,12 +77,12 @@ public class DefaultedJsonObject extends JsonObject {
                 set(key, janksonObject, comment);
             } else {
                 System.out.println("[TinyConfig] " + key + " has an incorrect value type, replacing.");
-                DefaultedJsonObject janksonObject = new DefaultedJsonObject();
+                DefaultedJsonObject janksonObject = new DefaultedJsonObject(getMarshaller());
                 modifier.accept(janksonObject);
                 set(key, janksonObject, comment);
             }
         } else {
-            DefaultedJsonObject janksonObject = new DefaultedJsonObject();
+            DefaultedJsonObject janksonObject = new DefaultedJsonObject(getMarshaller());
             modifier.accept(janksonObject);
             set(key, janksonObject, comment);
         }
