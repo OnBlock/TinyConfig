@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "id": "tinyconfig",
+  "version": "${version}",
+
+  "name": "TinyConfig",
+  "description": "This is an example description! Tell everyone what your mod is about!",
+  "authors": [
+    "Indicode"
+  ],
+  "contact": {
+    "homepage": "https://fabricmc.net/",
+    "sources": "https://github.com/FabricMC/fabric-example-mod"
+  },
+
+  "license": "CC0-1.0",
+  "icon": "",
+
+  "environment": "*",
+  "mixins": [
+  ],
+
+  "depends": {
+    "fabricloader": ">=0.4.0",
+    "fabric": "*"
+  },
+  "suggests": {
+    "flamingo": "*"
+  }
+}
