@@ -98,5 +98,7 @@ What, may you ask do I do with the consumer?
 
 It returns a `DefauledJsonObject`, which is the same thing as the base config, so you can use it exactly as you would the base config.
 
+#### Here's an example config: https://github.com/indi-code/HackerBeware/blob/master/src/main/java/io/github/indicode/fabric/anticheat/Config.java
+
 -----
 I hope everything works for you, and if it dosen't, feel free to use the issue tracker, or ping/dm @GiantNuker#8194 on [the fabric discord](https://discord.gg/v6v4pMv).
