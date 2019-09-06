@@ -9,8 +9,9 @@
     "Indicode"
   ],
   "contact": {
-    "homepage": "https://fabricmc.net/",
-    "sources": "https://github.com/FabricMC/fabric-example-mod"
+    "homepage": "https://www.curseforge.com/minecraft/mc-mods/tinyconfig",
+    "sources": "https://github.com/indi-code/TinyConfig",
+    "issues": "https://github.com/indi-code/TinyConfig/issues"
   },
 
   "license": "CC0-1.0",
@@ -26,5 +27,8 @@
   },
   "suggests": {
     "flamingo": "*"
+  },
+  "custom": {
+    "modmenu:api": true
   }
 }
