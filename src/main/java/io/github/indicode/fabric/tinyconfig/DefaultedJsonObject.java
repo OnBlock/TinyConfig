@@ -41,6 +41,25 @@ public class DefaultedJsonObject extends JsonObject {
     public JsonElement get(String key, JsonElement defaultValue) {
         return get(key, defaultValue, null);
     }
+    public <T> T get(String key, Class<T> tClass, Getter<? extends T> defaultValueGetter, String comment) {
+        if (comment != null) super.setComment(key, comment);
+        if (super.get(key) == null) {
+            T defaultValue = defaultValueGetter.get();
+            super.put(key, this.getMarshaller().serialize(defaultValue));
+            return defaultValue;
+        } else {
+            return super.get(tClass, key);
+        }
+    }
+    public <T> T get(String key, Class<T> tClass, T defaultValue, String comment) {
+        return get(key, tClass, (Getter<? extends T>) () -> defaultValue, comment);
+    }
+    public <T> T get(String key, Class<T> tClass, Getter<? extends T> defaultValueGetter) {
+        return get(key, tClass, defaultValueGetter, null);
+    }
+    public <T> T get(String key, Class<T> tClass, T defaultValue) {
+        return get(key, tClass, defaultValue, null);
+    }
     public JsonArray getArray(String key, Getter<? extends JsonArray> defaultValueGetter, String comment) {
         if (comment != null) super.setComment(key, comment);
         if (this.containsKey(key)) {
@@ -96,6 +115,12 @@ public class DefaultedJsonObject extends JsonObject {
     }
     public void set(String key, JsonElement value) {
         set(key, value, null);
+    }
+    public void set(String key, Object value, String comment) {
+        set(key, this.getMarshaller().serialize(value), comment);
+    }
+    public void set(String key, Object value) {
+        set(key, this.getMarshaller().serialize(value));
     }
     public JsonPrimitive getPrimitive(String key, Getter<? extends Object> defaultValueGetter, Class clazz, String comment) {
         Class type = getPrimitiveType(key);
