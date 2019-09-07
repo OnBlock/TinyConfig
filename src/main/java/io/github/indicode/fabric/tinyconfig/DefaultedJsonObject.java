@@ -60,31 +60,31 @@ public class DefaultedJsonObject extends JsonObject {
     public <T> T get(String key, Class<T> tClass, T defaultValue) {
         return get(key, tClass, defaultValue, null);
     }
-    public JsonArray getArray(String key, Getter<? extends JsonArray> defaultValueGetter, String comment) {
+    public DefaultedJsonArray getArray(String key, Getter<? extends DefaultedJsonArray> defaultValueGetter, String comment) {
         if (comment != null) super.setComment(key, comment);
         if (this.containsKey(key)) {
             JsonElement value = this.get(key, defaultValueGetter, comment);
             if (value instanceof JsonArray) {
-                return (JsonArray) value;
+                return DefaultedJsonArray.of((JsonArray) value);
             } else {
-                JsonArray defaultValue = defaultValueGetter.get();
+                DefaultedJsonArray defaultValue = defaultValueGetter.get();
                 System.out.println("[TinyConfig] " + key + " has an incorrect value type, replacing.");
                 set(key, defaultValue, comment);
                 return defaultValue;
             }
         } else {
-            JsonArray defaultValue = defaultValueGetter.get();
+            DefaultedJsonArray defaultValue = defaultValueGetter.get();
             set(key, defaultValue, comment);
             return defaultValue;
         }
     }
-    public JsonArray getArray(String key, Getter<? extends JsonArray> defaultValueGetter) {
+    public DefaultedJsonArray getArray(String key, Getter<? extends DefaultedJsonArray> defaultValueGetter) {
         return getArray(key, defaultValueGetter, null);
     }
-    public JsonArray getArray(String key, JsonArray defaultValue, String comment) {
+    public DefaultedJsonArray getArray(String key, DefaultedJsonArray defaultValue, String comment) {
         return getArray(key, () -> defaultValue, comment) ;
     }
-    public JsonArray getArray(String key, JsonArray defaultValue) {
+    public DefaultedJsonArray getArray(String key, DefaultedJsonArray defaultValue) {
         return getArray(key, defaultValue, null);
     }
     public void accessChild(String key, Consumer<DefaultedJsonObject> modifier, String comment) {
