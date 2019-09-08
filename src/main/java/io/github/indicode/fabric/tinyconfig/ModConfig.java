@@ -49,6 +49,7 @@ public class ModConfig {
         String toSave = json.toJson(JsonGrammar.JANKSON);
         if (!file.exists()) {
             try {
+                file.getParentFile().mkdirs();
                 file.createNewFile();
                 try (PrintWriter out = new PrintWriter(file)) {
                     out.print(toSave);
