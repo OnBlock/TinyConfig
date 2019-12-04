@@ -1,7 +1,7 @@
 package io.github.indicode.fabric.tinyconfig;
 
 import blue.endless.jankson.JsonGrammar;
-import blue.endless.jankson.impl.SyntaxError;
+import blue.endless.jankson.api.SyntaxError;
 import io.github.cottonmc.jankson.JanksonFactory;
 
 import java.io.File;

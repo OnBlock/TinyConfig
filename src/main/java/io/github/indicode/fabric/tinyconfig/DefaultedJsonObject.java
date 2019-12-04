@@ -1,7 +1,7 @@
 package io.github.indicode.fabric.tinyconfig;
 
 import blue.endless.jankson.*;
-import blue.endless.jankson.impl.Marshaller;
+import blue.endless.jankson.api.Marshaller;
 
 import java.util.function.Consumer;
 
