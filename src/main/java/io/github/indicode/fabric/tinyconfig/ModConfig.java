@@ -2,8 +2,8 @@ package io.github.indicode.fabric.tinyconfig;
 
 import blue.endless.jankson.Jankson;
 import blue.endless.jankson.JsonGrammar;
-import blue.endless.jankson.impl.Marshaller;
-import blue.endless.jankson.impl.SyntaxError;
+import blue.endless.jankson.api.Marshaller;
+import blue.endless.jankson.api.SyntaxError;
 import io.github.cottonmc.jankson.JanksonFactory;
 import net.fabricmc.loader.FabricLoader;
 
