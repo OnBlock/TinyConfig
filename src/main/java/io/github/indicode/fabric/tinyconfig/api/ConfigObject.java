@@ -99,26 +99,6 @@ public interface ConfigObject<T, C extends ConfigObject<T, C, A>, A extends Conf
     }
     void set(String key, Object value, String comment);
 
-    default void setString(String key, String value) {
-        setString(key, value, null);
-    }
-    void setString(String key, String value, String comment);
-
-    default void setInt(String key, int value) {
-        setInt(key, value, null);
-    }
-    void setInt(String key, int value, String comment);
-
-    default void setDouble(String key, double value) {
-        setDouble(key, value, null);
-    }
-    void setDouble(String key, double value, String comment);
-
-    default void setArray(String key, A value) {
-        setArray(key, value, null);
-    }
-    void setArray(String key, A value, String comment);
-
     default void modifyChild(String key, Consumer<C> modifier) {
         modifyChild(key, modifier, null);
     }
