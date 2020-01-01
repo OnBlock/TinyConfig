@@ -89,10 +89,15 @@ public interface ConfigObject<T, C extends ConfigObject<T, C, A>, A extends Conf
     }
     A getArray(String key, Getter<A> defaultValueGetter, String comment);
 
-    default void set(String key, T value) {
+    default void setElement(String key, T value) {
+        setElement(key, value, null);
+    }
+    void setElement(String key, T value, String comment);
+
+    default void set(String key, Object value) {
         set(key, value, null);
     }
-    void set(String key, T value, String comment);
+    void set(String key, Object value, String comment);
 
     default void setString(String key, String value) {
         setString(key, value, null);
@@ -114,6 +119,8 @@ public interface ConfigObject<T, C extends ConfigObject<T, C, A>, A extends Conf
     }
     void setArray(String key, A value, String comment);
 
-    void modifyChild(String key, Consumer<C> modifier);
+    default void modifyChild(String key, Consumer<C> modifier) {
+        modifyChild(key, modifier, null);
+    }
     void modifyChild(String key, Consumer<C> modifier, String comment);
 }
