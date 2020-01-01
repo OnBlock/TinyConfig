@@ -4,9 +4,9 @@
   "version": "${version}",
 
   "name": "TinyConfig",
-  "description": "This is an example description! Tell everyone what your mod is about!",
+  "description": "A tiny configuration mod",
   "authors": [
-    "Indicode"
+    "GiantNuker"
   ],
   "contact": {
     "homepage": "https://www.curseforge.com/minecraft/mc-mods/tinyconfig",
@@ -23,9 +23,6 @@
 
   "depends": {
     "fabricloader": ">=0.4.0"
-  },
-  "suggests": {
-    "flamingo": "*"
   },
   "custom": {
     "modmenu:api": true
