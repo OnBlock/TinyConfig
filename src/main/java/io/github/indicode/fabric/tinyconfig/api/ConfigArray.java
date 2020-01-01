@@ -87,31 +87,18 @@ public interface ConfigArray<T, A extends ConfigArray<T, A>> extends Iterable<T>
     }
     A getArray(int key, Getter<A> defaultValue, String comment);
 
-    default void set(int key, T value) {
+    default void setElement(int key, T value) {
         set(key, value, null);
     }
-    void set(int key, T value, String comment);
+    void setElement(int key, T value, String comment);
 
-    default void setString(int key, String value) {
-        setString(key, value, null);
+    default void set(int key, Object value) {
+        set(key, value, null);
     }
-    void setString(int key, String value, String comment);
-
-    default void setInt(int key, int value) {
-        setInt(key, value, null);
-    }
-    void setInt(int key, int value, String comment);
-
-    default void setDouble(int key, double value) {
-        setDouble(key, value, null);
-    }
-    void setDouble(int key, double value, String comment);
-
-    default void setArray(int key, A value) {
-        setArray(key, value, null);
-    }
-    void setArray(int key, A value, String comment);
+    void set(int key, Object value, String comment);
     
-    void addArray(ConfigArray<T, A> value);
+    default void addArray(ConfigArray<T, A> value) {
+        addArray(value, null);
+    }
     void addArray(ConfigArray<T, A> value, String comment);
 }
