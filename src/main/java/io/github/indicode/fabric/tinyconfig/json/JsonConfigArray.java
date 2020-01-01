@@ -2,7 +2,10 @@ package io.github.indicode.fabric.tinyconfig.json;
 
 import blue.endless.jankson.JsonArray;
 import blue.endless.jankson.JsonElement;
+import blue.endless.jankson.JsonObject;
 import blue.endless.jankson.JsonPrimitive;
+import blue.endless.jankson.impl.Marshaller;
+import io.github.indicode.fabric.tinyconfig.DefaultedJsonObject;
 import io.github.indicode.fabric.tinyconfig.Getter;
 import io.github.indicode.fabric.tinyconfig.api.ConfigArray;
 
@@ -12,7 +15,19 @@ import java.util.List;
 import static io.github.indicode.fabric.tinyconfig.Common.LOGGER;
 
 public class JsonConfigArray extends JsonArray implements ConfigArray<JsonElement, JsonConfigArray> {
-
+    public JsonConfigArray(Marshaller marshaller) {
+        super();
+        this.marshaller = marshaller;
+    }
+    public JsonConfigArray() {
+        super();
+    }
+    public static JsonConfigArray of(JsonArray jsonObject) {
+        if (jsonObject instanceof JsonConfigArray) return (JsonConfigArray) jsonObject;
+        JsonConfigArray n = new JsonConfigArray(jsonObject.getMarshaller());
+        n.addAll(jsonObject);
+        return n;
+    }
     @Override
     public JsonElement get(int index, String comment) {
         if (comment != null) super.setComment(index, comment);
@@ -54,10 +69,10 @@ public class JsonConfigArray extends JsonArray implements ConfigArray<JsonElemen
     public JsonConfigArray getArray(int index, String comment) {
         Object value = get(index, comment);
         if (value instanceof JsonArray) {
-            return JsonConfigArray.of(value);
+            return JsonConfigArray.of((JsonArray) value);
         }
         if (value != null) {
-            LOGGER.warn("{} has an invalid value for type 'Array', overwriting with default", key);
+            LOGGER.warn("{} has an invalid value for type 'Array', overwriting with default", index);
         }
         return null;
     }

@@ -37,7 +37,7 @@ public class JsonConfigObject extends JsonObject implements ConfigObject<JsonEle
             return super.get(key);
         }
     }
-    private <T> T getPrimitive(String key, Class<T> clazz, Getter<T> defaultValueGetter, String comment) {
+    protected  <T> T getPrimitive(String key, Class<T> clazz, Getter<T> defaultValueGetter, String comment) {
         Object value = get(key, () -> new JsonPrimitive(defaultValueGetter.get()), comment);
         if (value instanceof JsonPrimitive) {
             if (((JsonPrimitive) value).getValue().getClass() == clazz) {
@@ -75,7 +75,7 @@ public class JsonConfigObject extends JsonObject implements ConfigObject<JsonEle
     public JsonConfigArray getArray(String key, Getter<JsonConfigArray> defaultValueGetter, String comment) {
         Object value = get(key, defaultValueGetter::get, comment);
         if (value instanceof JsonArray) {
-            return JsonConfigArray.of(value);
+            return JsonConfigArray.of((JsonArray) value);
         }
         if (value != null) {
             LOGGER.warn("{} has an invalid value for type 'Array', overwriting with default", key);

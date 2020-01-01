@@ -3,7 +3,9 @@ package io.github.indicode.fabric.tinyconfig.api;
 import blue.endless.jankson.JsonElement;
 import io.github.indicode.fabric.tinyconfig.Getter;
 
-public interface ConfigArray<T, A extends ConfigArray<T, A>> extends Iterable<T> {
+import java.util.Collection;
+
+public interface ConfigArray<T, A extends ConfigArray<T, A>> extends Collection<T> {
     default T get(int index) {
         return get(index, null);
     }
@@ -42,8 +44,5 @@ public interface ConfigArray<T, A extends ConfigArray<T, A>> extends Iterable<T>
     }
     void addElement(T value, String comment);
 
-    default void add(Object value) {
-        add(value, null);
-    }
     void add(Object value, String comment);
 }
