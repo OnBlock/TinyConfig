@@ -1,6 +1,8 @@
-package io.github.indicode.fabric.tinyconfig;
+package io.github.indicode.fabric.tinyconfig.api;
 
-public interface ConfigArray<T, A> extends Iterable<T> {
+import io.github.indicode.fabric.tinyconfig.Getter;
+
+public interface ConfigArray<T, A extends ConfigArray<T, A>> extends Iterable<T> {
     default T get(int key) {
         return get(key, (T) null);
     }
