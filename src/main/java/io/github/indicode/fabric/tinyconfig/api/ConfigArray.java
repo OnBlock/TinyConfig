@@ -4,88 +4,34 @@ import io.github.indicode.fabric.tinyconfig.Getter;
 
 public interface ConfigArray<T, A extends ConfigArray<T, A>> extends Iterable<T> {
     default T get(int index) {
-        return get(index, (T) null);
+        return get(index, null);
     }
-    default T get(int index, T defaultValue) {
-        return get(index, defaultValue, null);
-    }
-    default T get(int index, T defaultValue, String comment) {
-        return get(index, () -> defaultValue, comment);
-    }
-    default T get(int index, Getter<T> defaultValue) {
-        return get(index, defaultValue, null);
-    }
-    T get(int index, Getter<T> defaultValue, String comment);
+    T get(int index, String comment);
 
     default String getString(int index) {
-        return getString(index, (String) null);
+        return getString(index, null);
     }
-    default String getString(int index, String defaultValue) {
-        return getString(index, defaultValue, null);
-    }
-    default String getString(int index, String defaultValue, String comment) {
-        return getString(index, () -> defaultValue, comment);
-    }
-    default String getString(int index, Getter<String> defaultValue) {
-        return getString(index, defaultValue, null);
-    }
-    String getString(int index, Getter<String> defaultValue, String comment);
+    String getString(int index, String comment);
 
     default boolean getBool(int index) {
-        return getBool(index, false);
+        return getBool(index, null);
     }
-    default boolean getBool(int index, boolean defaultValue) {
-        return getBool(index, defaultValue, null);
-    }
-    default boolean getBool(int index, boolean defaultValue, String comment) {
-        return getBool(index, () -> defaultValue, comment);
-    }
-    default boolean getBool(int index, Getter<Boolean> defaultValue) {
-        return getBool(index, defaultValue, null);
-    }
-    boolean getBool(int index, Getter<Boolean> defaultValue, String comment);
+    boolean getBool(int index, String comment);
 
     default int getInt(int index) {
-        return getInt(index, 0);
+        return getInt(index, null);
     }
-    default int getInt(int index, int defaultValue) {
-        return getInt(index, defaultValue, null);
-    }
-    default int getInt(int index, int defaultValue, String comment) {
-        return getInt(index, () -> defaultValue, comment);
-    }
-    default int getInt(int index, Getter<Integer> defaultValue) {
-        return getInt(index, defaultValue, null);
-    }
-    int getInt(int index, Getter<Integer> defaultValue, String comment);
+    int getInt(int index, String comment);
 
     default double getDouble(int index) {
-        return getDouble(index, 0);
+        return getDouble(index, null);
     }
-    default double getDouble(int index, double defaultValue) {
-        return getDouble(index, defaultValue, null);
-    }
-    default double getDouble(int index, double defaultValue, String comment) {
-        return getDouble(index, () -> defaultValue, comment);
-    }
-    default double getDouble(int index, Getter<Double> defaultValue) {
-        return getDouble(index, defaultValue, null);
-    }
-    double getDouble(int index, Getter<Double> defaultValue, String comment);
+    double getDouble(int index, String comment);
 
     default A getArray(int index) {
-        return getArray(index, (A) null);
+        return getArray(index, null);
     }
-    default A getArray(int index, A defaultValue) {
-        return getArray(index, defaultValue, null);
-    }
-    default A getArray(int index, A defaultValue, String comment) {
-        return getArray(index, () -> defaultValue, comment);
-    }
-    default A getArray(int index, Getter<A> defaultValue) {
-        return getArray(index, defaultValue, null);
-    }
-    A getArray(int index, Getter<A> defaultValue, String comment);
+    A getArray(int index, String comment);
 
     default void setElement(int index, T value) {
         set(index, value, null);
@@ -97,8 +43,8 @@ public interface ConfigArray<T, A extends ConfigArray<T, A>> extends Iterable<T>
     }
     void set(int index, Object value, String comment);
     
-    default void addArray(ConfigArray<T, A> value) {
+    default void addArray(A value) {
         addArray(value, null);
     }
-    void addArray(ConfigArray<T, A> value, String comment);
+    void addArray(A value, String comment);
 }
