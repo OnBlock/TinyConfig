@@ -1,5 +1,6 @@
 package io.github.indicode.fabric.tinyconfig.api;
 
+import blue.endless.jankson.JsonElement;
 import io.github.indicode.fabric.tinyconfig.Getter;
 
 public interface ConfigArray<T, A extends ConfigArray<T, A>> extends Iterable<T> {
@@ -33,18 +34,16 @@ public interface ConfigArray<T, A extends ConfigArray<T, A>> extends Iterable<T>
     }
     A getArray(int index, String comment);
 
-    default void setElement(int index, T value) {
-        set(index, value, null);
-    }
-    void setElement(int index, T value, String comment);
-
-    default void set(int index, Object value) {
-        set(index, value, null);
-    }
-    void set(int index, Object value, String comment);
+    void removeElement(T value);
+    void remove(int index);
     
-    default void addArray(A value) {
-        addArray(value, null);
+    default void addElement(T value) {
+        addElement(value, null);
     }
-    void addArray(A value, String comment);
+    void addElement(T value, String comment);
+
+    default void add(Object value) {
+        add(value, null);
+    }
+    void add(Object value, String comment);
 }
