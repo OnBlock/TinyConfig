@@ -38,7 +38,8 @@ public class ClothEntryBuilder {
 
     public static AbstractConfigListEntry getGuiEntry(String id, Object data, ConfigEntryMeta metadata, ConfigEntryBuilder entryBuilder) {
         ConfigEntryProvider entryProvider = getEntryProvider(data.getClass());
-        return entryProvider.provide(id, data, metadata, entryBuilder);
+        AbstractConfigListEntry entry = entryProvider.provide(id, data, metadata, entryBuilder);
+        return entry;
     }
 
     private static final String TPRE = "tinyconfig.";
@@ -82,11 +83,11 @@ public class ClothEntryBuilder {
     }
 
     static {
-        registerBuilder(String.class, (id, str, meta, entryBuilder) -> entryBuilder.startStrField(id, str).build());
-        registerBuilder(Number.class, (id, num, meta, entryBuilder) -> entryBuilder.startDoubleField(id, num.doubleValue()).build());
-        registerBuilder(Integer.class, (id, num, meta, entryBuilder) -> entryBuilder.startIntField(id, num).build());
-        registerBuilder(Float.class, (id, num, meta, entryBuilder) -> entryBuilder.startFloatField(id, num).build());
-        registerBuilder(Double.class, (id, num, meta, entryBuilder) -> entryBuilder.startDoubleField(id, num).build());
-        registerBuilder(Long.class, (id, num, meta, entryBuilder) -> entryBuilder.startLongField(id, num).build());
+        registerBuilder(String.class, (id, str, meta, entryBuilder) -> entryBuilder.startStrField(id, str).setTooltip(meta.comment).setDefaultValue(str).build());
+        registerBuilder(Number.class, (id, num, meta, entryBuilder) -> entryBuilder.startDoubleField(id, num.doubleValue()).setTooltip(meta.comment).setDefaultValue(num.doubleValue()).build());
+        registerBuilder(Integer.class, (id, num, meta, entryBuilder) -> entryBuilder.startIntField(id, num).setTooltip(meta.comment).setDefaultValue(num).build());
+        registerBuilder(Float.class, (id, num, meta, entryBuilder) -> entryBuilder.startFloatField(id, num).setTooltip(meta.comment).setDefaultValue(num).build());
+        registerBuilder(Double.class, (id, num, meta, entryBuilder) -> entryBuilder.startDoubleField(id, num).setTooltip(meta.comment).setDefaultValue(num).build());
+        registerBuilder(Long.class, (id, num, meta, entryBuilder) -> entryBuilder.startLongField(id, num).setTooltip(meta.comment).setDefaultValue(num).build());
     }
 }
