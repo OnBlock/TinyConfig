@@ -19,6 +19,7 @@
 
   "environment": "*",
   "mixins": [
+    "test.mixins.json"
   ],
 
   "depends": {

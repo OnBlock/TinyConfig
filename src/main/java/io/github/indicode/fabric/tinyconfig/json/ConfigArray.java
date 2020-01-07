@@ -1,7 +1,4 @@
-package io.github.indicode.fabric.tinyconfig.api;
-
-import blue.endless.jankson.JsonElement;
-import io.github.indicode.fabric.tinyconfig.Getter;
+package io.github.indicode.fabric.tinyconfig.json;
 
 import java.util.Collection;
 

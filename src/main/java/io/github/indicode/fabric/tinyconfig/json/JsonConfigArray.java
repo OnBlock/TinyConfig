@@ -1,10 +1,9 @@
-package io.github.indicode.fabric.tinyconfig.json;
+/*package io.github.indicode.fabric.tinyconfig.json;
 
 import blue.endless.jankson.JsonArray;
 import blue.endless.jankson.JsonElement;
 import blue.endless.jankson.JsonPrimitive;
 import blue.endless.jankson.impl.Marshaller;
-import io.github.indicode.fabric.tinyconfig.api.ConfigArray;
 
 import java.lang.reflect.Field;
 import java.util.List;
@@ -100,3 +99,4 @@ public class JsonConfigArray extends JsonArray implements ConfigArray<JsonElemen
         add(marshaller.serialize(value), comment);
     }
 }
+*/

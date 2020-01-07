@@ -1,4 +1,4 @@
-package io.github.indicode.fabric.tinyconfig;
+/*package io.github.indicode.fabric.tinyconfig;
 
 import blue.endless.jankson.Jankson;
 import blue.endless.jankson.JsonGrammar;
@@ -14,7 +14,7 @@ import java.util.function.Consumer;
 
 /**
  * @author Indigo Amann
- */
+ *
 public class ModConfig {
     public String modid;
     public Jankson jankson;
@@ -82,3 +82,4 @@ public class ModConfig {
         saveConfig(file, config);
     }
 }
+*/
