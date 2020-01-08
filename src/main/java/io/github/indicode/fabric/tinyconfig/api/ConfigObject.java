@@ -13,14 +13,14 @@ public class ConfigObject extends HashMap<String, ConfigObject.Entry> {
         return (T) get(key);
     }
     public static class Entry<T> {
-        protected String comment = null;
+        protected String[] comment = null;
         protected String translation = null;
         protected boolean requiresRestart = false;
         protected T data;
         public Entry(T data) {
             this.data = data;
         }
-        public Entry<T> setComment(String comment) {
+        public Entry<T> setComment(String... comment) {
             this.comment = comment;
             return this;
         }
@@ -33,7 +33,7 @@ public class ConfigObject extends HashMap<String, ConfigObject.Entry> {
             return this;
         }
 
-        public String getComment() {
+        public String[] getComment() {
             return comment;
         }
         public String getTranslation() {

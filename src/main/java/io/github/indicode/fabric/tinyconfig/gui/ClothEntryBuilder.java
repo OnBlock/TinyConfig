@@ -78,13 +78,13 @@ public class ClothEntryBuilder {
         return configBuilder;
     }
 
-    public static <T extends FieldBuilder> T setFieldComment(T field, String comment) {
+    public static <T extends FieldBuilder> T setFieldComment(T field, String[] comment) {
         if (comment == null) {
             return field;
         } else {
             try {
                 Method method = field.getClass().getMethod("setTooltip", String[].class);
-                method.invoke(field, (Object) new String[] {comment});
+                method.invoke(field, (Object) comment);
             } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
                 e.printStackTrace();
             }
