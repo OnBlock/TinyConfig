@@ -1,20 +1,14 @@
 package io.github.indicode.fabric.tinyconfig.gui;
 
-import io.github.indicode.fabric.tinyconfig.Getter;
-import io.github.indicode.fabric.tinyconfig.api.ConfigEntryMeta;
 import io.github.indicode.fabric.tinyconfig.api.ConfigObject;
 import me.shedaniel.clothconfig2.api.AbstractConfigListEntry;
 import me.shedaniel.clothconfig2.api.ConfigBuilder;
 import me.shedaniel.clothconfig2.api.ConfigCategory;
 import me.shedaniel.clothconfig2.api.ConfigEntryBuilder;
-import me.shedaniel.clothconfig2.impl.builders.DropdownMenuBuilder;
 import me.shedaniel.clothconfig2.impl.builders.SubCategoryBuilder;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
 
 public class ClothEntryBuilder {
     private static Map<Class, ConfigEntryProvider<?, AbstractConfigListEntry>> BUILDERS = new HashMap<>();
@@ -36,37 +30,37 @@ public class ClothEntryBuilder {
         }
     }
 
-    public static AbstractConfigListEntry getGuiEntry(String id, Object data, ConfigEntryMeta metadata, ConfigEntryBuilder entryBuilder) {
-        ConfigEntryProvider entryProvider = getEntryProvider(data.getClass());
-        AbstractConfigListEntry entry = entryProvider.provide(id, data, metadata, entryBuilder);
-        return entry;
+    public static AbstractConfigListEntry getGuiEntry(String id, ConfigObject.Entry entry, ConfigEntryBuilder entryBuilder) {
+        ConfigEntryProvider entryProvider = getEntryProvider(entry.get().getClass());
+        AbstractConfigListEntry lentry = entryProvider.provide(id, entry, entryBuilder);
+        return lentry;
     }
 
     private static final String TPRE = "tinyconfig.";
 
-    private static AbstractConfigListEntry buildEntry(String key, Object data, ConfigEntryMeta meta, ConfigEntryBuilder entryBuilder, String prefix, ConfigBuilder config) {
+    private static AbstractConfigListEntry buildEntry(String key, ConfigObject.Entry entry, ConfigEntryBuilder entryBuilder, String prefix, ConfigBuilder config) {
+        Object data = entry.get();
         if (data instanceof ConfigObject) {
             ConfigObject object = (ConfigObject) data;
             if (object.isCategory) {
-                String catName = meta.translation == null ? prefix + "." + key : meta.translation;
+                String catName = entry.getTranslation() == null ? prefix + "." + key : entry.getTranslation();
                 ConfigCategory cat = config.getOrCreateCategory(catName);
-                for (Map.Entry<String, Object> entry : object.entrySet()) {
-                    AbstractConfigListEntry guiEntry = buildEntry(entry.getKey(), entry.getValue(), object.getMeta(entry.getKey()), entryBuilder, prefix + "." + key, config);//getGuiEntry(entry.getKey(), entry.getValue(), object.getMeta(entry.getKey()));
+                for (Map.Entry<String, ConfigObject.Entry> subEntry : object.entrySet()) {
+                    AbstractConfigListEntry guiEntry = buildEntry(subEntry.getKey(), subEntry.getValue(), entryBuilder, prefix + "." + key, config);
                     if (guiEntry != null) cat.addEntry(guiEntry);
-
                 }
                 return null;
             } else {
-                String dropName = meta.translation == null ? TPRE + prefix + "." + key : meta.translation;
+                String dropName = entry.getTranslation() == null ? TPRE + prefix + "." + key : entry.getTranslation();
                 SubCategoryBuilder dropdown = entryBuilder.startSubCategory(dropName);
-                for (Map.Entry<String, Object> entry : object.entrySet()) {
-                    AbstractConfigListEntry guiEntry = buildEntry(entry.getKey(), entry.getValue(), object.getMeta(entry.getKey()), entryBuilder, prefix + "." + key, config);//getGuiEntry(entry.getKey(), entry.getValue(), object.getMeta(entry.getKey()));
+                for (Map.Entry<String, ConfigObject.Entry> subEntry : object.entrySet()) {
+                    AbstractConfigListEntry guiEntry = buildEntry(subEntry.getKey(), subEntry.getValue(), entryBuilder, prefix + "." + key, config);
                     if (guiEntry != null) dropdown.add(guiEntry);
                 }
                 return dropdown.build();
             }
         } else {
-            AbstractConfigListEntry guiEntry = getGuiEntry(TPRE + prefix + "." + key, data, meta, entryBuilder);
+            AbstractConfigListEntry guiEntry = getGuiEntry(TPRE + prefix + "." + key, entry, entryBuilder);
             return guiEntry;
         }
     }
@@ -74,20 +68,19 @@ public class ClothEntryBuilder {
     public static ConfigBuilder getConfigBuilder(ConfigObject config, String modid) {
         ConfigBuilder configBuilder = ConfigBuilder.create();
         ConfigEntryBuilder entryBuilder = ConfigEntryBuilder.create();
-        for (Map.Entry<String, Object> entry : config.entrySet()) {
-            ConfigEntryMeta meta = config.getMeta(entry.getKey());
-            AbstractConfigListEntry guiEntry = buildEntry(entry.getKey(), entry.getValue(), meta, entryBuilder, modid, configBuilder);
-            if (guiEntry != null) configBuilder.getOrCreateCategory(meta.translation == null ? TPRE + modid + ".general" : meta.translation).addEntry(guiEntry);
+        for (Map.Entry<String, ConfigObject.Entry> entry : config.entrySet()) {
+            AbstractConfigListEntry guiEntry = buildEntry(entry.getKey(), entry.getValue(), entryBuilder, modid, configBuilder);
+            if (guiEntry != null) configBuilder.getOrCreateCategory(entry.getValue().getTranslation() == null ? TPRE + modid + ".general" : entry.getValue().getTranslation()).addEntry(guiEntry);
         }
         return configBuilder;
     }
 
     static {
-        registerBuilder(String.class, (id, str, meta, entryBuilder) -> entryBuilder.startStrField(id, str).setTooltip(meta.comment).setDefaultValue(str).build());
-        registerBuilder(Number.class, (id, num, meta, entryBuilder) -> entryBuilder.startDoubleField(id, num.doubleValue()).setTooltip(meta.comment).setDefaultValue(num.doubleValue()).build());
-        registerBuilder(Integer.class, (id, num, meta, entryBuilder) -> entryBuilder.startIntField(id, num).setTooltip(meta.comment).setDefaultValue(num).build());
-        registerBuilder(Float.class, (id, num, meta, entryBuilder) -> entryBuilder.startFloatField(id, num).setTooltip(meta.comment).setDefaultValue(num).build());
-        registerBuilder(Double.class, (id, num, meta, entryBuilder) -> entryBuilder.startDoubleField(id, num).setTooltip(meta.comment).setDefaultValue(num).build());
-        registerBuilder(Long.class, (id, num, meta, entryBuilder) -> entryBuilder.startLongField(id, num).setTooltip(meta.comment).setDefaultValue(num).build());
+        registerBuilder(String.class, (id, entry, entryBuilder) -> entryBuilder.startStrField(id, entry.get()).setTooltip(entry.getComment()).setDefaultValue(entry.get()).build());
+        registerBuilder(Number.class, (id, entry, entryBuilder) -> entryBuilder.startDoubleField(id, entry.get().doubleValue()).setTooltip(entry.getComment()).setDefaultValue(entry.get().doubleValue()).build());
+        registerBuilder(Integer.class, (id, entry, entryBuilder) -> entryBuilder.startIntField(id, entry.get()).setTooltip(entry.getComment()).setDefaultValue(entry.get()).build());
+        registerBuilder(Float.class, (id, entry, entryBuilder) -> entryBuilder.startFloatField(id, entry.get()).setTooltip(entry.getComment()).setDefaultValue(entry.get()).build());
+        registerBuilder(Double.class, (id, entry, entryBuilder) -> entryBuilder.startDoubleField(id, entry.get()).setTooltip(entry.getComment()).setDefaultValue(entry.get()).build());
+        registerBuilder(Long.class, (id, entry, entryBuilder) -> entryBuilder.startLongField(id, entry.get()).setTooltip(entry.getComment()).setDefaultValue(entry.get()).build());
     }
 }
