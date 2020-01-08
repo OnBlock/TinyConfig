@@ -5,8 +5,11 @@ import me.shedaniel.clothconfig2.api.AbstractConfigListEntry;
 import me.shedaniel.clothconfig2.api.ConfigBuilder;
 import me.shedaniel.clothconfig2.api.ConfigCategory;
 import me.shedaniel.clothconfig2.api.ConfigEntryBuilder;
+import me.shedaniel.clothconfig2.impl.builders.FieldBuilder;
 import me.shedaniel.clothconfig2.impl.builders.SubCategoryBuilder;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -75,12 +78,26 @@ public class ClothEntryBuilder {
         return configBuilder;
     }
 
+    public static <T extends FieldBuilder> T setFieldComment(T field, String comment) {
+        if (comment == null) {
+            return field;
+        } else {
+            try {
+                Method method = field.getClass().getMethod("setTooltip", String[].class);
+                method.invoke(field, (Object) new String[] {comment});
+            } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+                e.printStackTrace();
+            }
+            return field;
+        }
+    }
+
     static {
-        registerBuilder(String.class, (id, entry, entryBuilder) -> entryBuilder.startStrField(id, entry.get()).setTooltip(entry.getComment()).setDefaultValue(entry.get()).build());
-        registerBuilder(Number.class, (id, entry, entryBuilder) -> entryBuilder.startDoubleField(id, entry.get().doubleValue()).setTooltip(entry.getComment()).setDefaultValue(entry.get().doubleValue()).build());
-        registerBuilder(Integer.class, (id, entry, entryBuilder) -> entryBuilder.startIntField(id, entry.get()).setTooltip(entry.getComment()).setDefaultValue(entry.get()).build());
-        registerBuilder(Float.class, (id, entry, entryBuilder) -> entryBuilder.startFloatField(id, entry.get()).setTooltip(entry.getComment()).setDefaultValue(entry.get()).build());
-        registerBuilder(Double.class, (id, entry, entryBuilder) -> entryBuilder.startDoubleField(id, entry.get()).setTooltip(entry.getComment()).setDefaultValue(entry.get()).build());
-        registerBuilder(Long.class, (id, entry, entryBuilder) -> entryBuilder.startLongField(id, entry.get()).setTooltip(entry.getComment()).setDefaultValue(entry.get()).build());
+        registerBuilder(String.class, (id, entry, entryBuilder) -> setFieldComment(entryBuilder.startStrField(id, entry.get()).setDefaultValue(entry.get()), entry.getComment()).build());
+        registerBuilder(Number.class, (id, entry, entryBuilder) -> setFieldComment(entryBuilder.startDoubleField(id, entry.get().doubleValue()).setDefaultValue(entry.get().doubleValue()), entry.getComment()).build());
+        registerBuilder(Integer.class, (id, entry, entryBuilder) -> setFieldComment(entryBuilder.startIntField(id, entry.get()).setDefaultValue(entry.get()), entry.getComment()).build());
+        registerBuilder(Float.class, (id, entry, entryBuilder) -> setFieldComment(entryBuilder.startFloatField(id, entry.get()).setDefaultValue(entry.get()), entry.getComment()).build());
+        registerBuilder(Double.class, (id, entry, entryBuilder) -> setFieldComment(entryBuilder.startDoubleField(id, entry.get()).setDefaultValue(entry.get()), entry.getComment()).build());
+        registerBuilder(Long.class, (id, entry, entryBuilder) -> setFieldComment(entryBuilder.startLongField(id, entry.get()).setDefaultValue(entry.get()), entry.getComment()).build());
     }
 }
